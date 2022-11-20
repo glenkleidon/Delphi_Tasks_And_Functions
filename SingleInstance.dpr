@@ -21,13 +21,12 @@ begin
 
     TParallel.For(0,9, procedure (i: integer)
     begin
-      var
-      c := WriteOneHundredThousandRandomBytesIncrementingCounter(i);
-      Writeln(Format('Call %d complete.', [c]));
+      var id := WriteOneHundredThousandRandomBytesIncrementingCounter(i);
+      SynchronizeDisplay(id);
     end);
 
     watch.stop;
-    Writeln(Format('Time Taken: %.4fms',[watch.Elapsed.TotalMilliseconds]));
+    Writeln(Format('Time Taken: %.f2 ms',[watch.Elapsed.TotalMilliseconds]));
     readln
   except
     on E: Exception do

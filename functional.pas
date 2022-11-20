@@ -3,10 +3,25 @@ unit functional;
 interface
 
 function WriteOneHundredThousandRandomBytesIncrementingCounter(ACounter: Integer): integer;
+procedure SynchronizeDisplay(AIndex: integer);
 
 implementation
 
-uses System.IOUtils, System.Classes;
+uses System.SysUtils, System.IOUtils, System.Classes, System.SyncObjs,
+  winapi.Windows;
+
+var SpinLock: TSpinLock;
+
+procedure SynchronizeDisplay(AIndex: integer);
+begin
+  SpinLock.Enter;
+  try
+    Writeln(format('Call %-2d finished.',[AIndex]));
+  finally
+    SpinLock.exit;
+  end;
+end;
+
 
 function WriteOneHundredThousandRandomBytesIncrementingCounter(ACounter: Integer): integer;
 begin
@@ -24,5 +39,9 @@ begin
     FileStream.free;
   end;
 end;
+
+initialization;
+
+  SpinLock := TSpinLock.create(false);
 
 end.
