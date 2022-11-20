@@ -18,7 +18,8 @@ begin
     writeln('Starting...');
     var watch := TStopwatch.StartNew;
 
-    WriteOneHundredThousandRandomBytes;
+    for var I := 1 to 10 do
+      WriteOneHundredThousandRandomBytes;
 
     watch.stop;
     Writeln(Format('Time Taken: %.4fms',[watch.Elapsed.TotalMilliseconds]));
