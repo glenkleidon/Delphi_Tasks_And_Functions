@@ -16,13 +16,16 @@ begin
   Randomize;
   try
     writeln('Starting...');
-    var c := 0;
+  //  var c := 0;
     var watch := TStopwatch.StartNew;
-
     for var I := 1 to 10 do
     begin
-      c := WriteOneHundredThousandRandomBytesIncrementingCounter(c);
-      Writeln(Format('Call %d complete.', [c]));
+      var task := TTask.Run( procedure
+      begin
+        var
+        c := WriteOneHundredThousandRandomBytesIncrementingCounter(1);
+        Writeln(Format('Call %d complete.', [c]));
+      end);
     end;
 
     watch.stop;
