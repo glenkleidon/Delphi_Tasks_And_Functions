@@ -6,7 +6,7 @@ function WriteOneHundredThousandRandomBytesIncrementingCounter(ACounter: Integer
 
 implementation
 
-uses System.IOUtils;
+uses System.IOUtils, System.Classes;
 
 function WriteOneHundredThousandRandomBytesIncrementingCounter(ACounter: Integer): integer;
 begin

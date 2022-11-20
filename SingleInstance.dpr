@@ -16,14 +16,15 @@ begin
   Randomize;
   try
     writeln('Starting...');
-    var c := 0;
+   // var c := 0;
     var watch := TStopwatch.StartNew;
 
-    for var I := 1 to 10 do
+    TParallel.For(1,10, procedure (i: integer)
     begin
-      c := WriteOneHundredThousandRandomBytesIncrementingCounter(c);
+      var
+      c := WriteOneHundredThousandRandomBytesIncrementingCounter(i-1);
       Writeln(Format('Call %d complete.', [c]));
-    end;
+    end);
 
     watch.stop;
     Writeln(Format('Time Taken: %.4fms',[watch.Elapsed.TotalMilliseconds]));
@@ -32,4 +33,5 @@ begin
     on E: Exception do
       Writeln(E.ClassName, ': ', E.Message);
   end;
+
 end.
