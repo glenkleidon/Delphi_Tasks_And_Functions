@@ -19,10 +19,10 @@ begin
    // var c := 0;
     var watch := TStopwatch.StartNew;
 
-    TParallel.For(1,10, procedure (i: integer)
+    TParallel.For(0,9, procedure (i: integer)
     begin
       var
-      c := WriteOneHundredThousandRandomBytesIncrementingCounter(i-1);
+      c := WriteOneHundredThousandRandomBytesIncrementingCounter(i);
       Writeln(Format('Call %d complete.', [c]));
     end);
 
