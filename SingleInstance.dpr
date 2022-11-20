@@ -9,23 +9,17 @@ uses
   System.Diagnostics,
   System.Classes,
   System.Threading,
-  System.IOUtils;
+  System.IOUtils,
+  functional in 'functional.pas';
 
 begin
   Randomize;
   try
     writeln('Starting...');
     var watch := TStopwatch.StartNew;
-    var FileStream :=  TFile.Create(TPath.GetTempFileName);
-    try
-    for var I := 0 to 100000 do
-    begin
-      var b := byte(random(256));
-      FileStream.Write(b,1);
-    end;
-    finally
-      FileStream.free;
-    end;
+
+    WriteOneHundredThousandRandomBytes;
+
     watch.stop;
     Writeln(Format('Time Taken: %.4fms',[watch.Elapsed.TotalMilliseconds]));
     readln
