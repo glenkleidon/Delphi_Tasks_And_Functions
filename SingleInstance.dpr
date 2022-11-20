@@ -10,27 +10,38 @@ uses
   System.Classes,
   System.Threading,
   System.IOUtils,
+  System.SyncObjs,
   functional in 'functional.pas';
+
+var
+  i,c: integer;
+  Tasks:TArray<ITask>;
 
 begin
   Randomize;
   try
+    c:= 0;
+    setlength(Tasks,10);
     writeln('Starting...');
-  //  var c := 0;
-    var watch := TStopwatch.StartNew;
-    for var I := 1 to 10 do
+    ThreadTracker.Start(10);
+
+    for I := 0 to 9 do
     begin
-      var task := TTask.Run( procedure
+      Tasks[i] := TTask.Create( procedure
       begin
-        var
-        c := WriteOneHundredThousandRandomBytesIncrementingCounter(1);
-        Writeln(Format('Call %d complete.', [c]));
+        TInterlocked.Increment(c);
+        var id := WriteOneHundredThousandRandomBytes(c);
+        ThreadTracker.ThreadFinished(id);
       end);
+      Tasks[i].start;
     end;
 
-    watch.stop;
-    Writeln(Format('Time Taken: %.4fms',[watch.Elapsed.TotalMilliseconds]));
-    readln
+    ThreadTracker.OnStop := procedure(AElapsed: int64)
+    begin
+      Writeln(Format('Time Taken: %dms',[AElapsed]));
+    end;
+
+    ReadLn;
   except
     on E: Exception do
       Writeln(E.ClassName, ': ', E.Message);
