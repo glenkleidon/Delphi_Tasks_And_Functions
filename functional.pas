@@ -2,24 +2,27 @@ unit functional;
 
 interface
 
-procedure WriteOneHundredThousandRandomBytes;
+function WriteOneHundredThousandRandomBytesIncrementingCounter(ACounter: Integer): integer;
 
 implementation
- uses System.IOUtils;
 
-procedure WriteOneHundredThousandRandomBytes;
+uses System.IOUtils;
+
+function WriteOneHundredThousandRandomBytesIncrementingCounter(ACounter: Integer): integer;
 begin
-    var FileStream :=  TFile.Create(TPath.GetTempFileName);
-    try
+  var
+  FileStream := TFile.Create(TPath.GetTempFileName);
+  try
     for var I := 0 to 100000 do
     begin
-      var b := byte(random(256));
-      FileStream.Write(b,1);
+      var
+      b := byte(random(256));
+      FileStream.Write(b, 1);
     end;
-    finally
-      FileStream.free;
-    end;
+    Exit(ACounter+1);
+  finally
+    FileStream.free;
+  end;
 end;
-
 
 end.

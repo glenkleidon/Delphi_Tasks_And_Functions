@@ -16,10 +16,14 @@ begin
   Randomize;
   try
     writeln('Starting...');
+    var c := 0;
     var watch := TStopwatch.StartNew;
 
     for var I := 1 to 10 do
-      WriteOneHundredThousandRandomBytes;
+    begin
+      c := WriteOneHundredThousandRandomBytesIncrementingCounter(c);
+      Writeln(Format('Call %d complete.', [c]));
+    end;
 
     watch.stop;
     Writeln(Format('Time Taken: %.4fms',[watch.Elapsed.TotalMilliseconds]));
