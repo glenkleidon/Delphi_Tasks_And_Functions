@@ -26,10 +26,8 @@ begin
 
     for var I := 1 to 10 do
     begin
-      threads.add(TRandomByteWriter.Create(c));;
+      threads.add(TRandomByteWriter.Create(i));;
     end;
-
-
 
     watch.stop;
     Writeln(Format('Time Taken: %.4fms',[watch.Elapsed.TotalMilliseconds]));

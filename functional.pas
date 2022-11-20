@@ -7,12 +7,22 @@ procedure OutputCompletedResult(ACounter: integer);
 
 implementation
 
-uses System.SysUtils, System.IOUtils;
+uses System.Syncobjs, System.SysUtils, System.IOUtils, winapi.Windows;
 
-procedure OutputCompletedResult(ACounter: integer);
+var
+  SpinLock : TSpinLock;
+
+procedure OutputCompletedResult(ACounter: Integer);
 begin
- Writeln(Format('Call %d complete.', [ACounter]));
+  SpinLock.Enter;
+  try
+    Writeln(Format('Call %d complete.', [ACounter]));
+  finally
+    SpinLock.Exit;
+  end;
 end;
+
+
 
 function WriteOneHundredThousandRandomBytesIncrementingCounter(ACounter: Integer): integer;
 begin
@@ -30,5 +40,8 @@ begin
     FileStream.free;
   end;
 end;
+
+initialization
+  SpinLock := TSpinLock.create(false);
 
 end.
