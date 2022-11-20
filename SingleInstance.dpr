@@ -7,23 +7,29 @@ program SingleInstance;
 uses
   System.SysUtils,
   System.Diagnostics,
+  System.Generics.Collections,
   System.Classes,
   System.Threading,
   System.IOUtils,
-  functional in 'functional.pas';
+  functional in 'functional.pas',
+  RandomByteWriterThread in 'RandomByteWriterThread.pas';
+
 
 begin
   Randomize;
   try
-    writeln('Starting...');
     var c := 0;
+    var threads := TList<TRandomByteWriter>.Create;
+
+    writeln('Starting...');
     var watch := TStopwatch.StartNew;
 
     for var I := 1 to 10 do
     begin
-      c := WriteOneHundredThousandRandomBytesIncrementingCounter(c);
-      Writeln(Format('Call %d complete.', [c]));
+      threads.add(TRandomByteWriter.Create(c));;
     end;
+
+
 
     watch.stop;
     Writeln(Format('Time Taken: %.4fms',[watch.Elapsed.TotalMilliseconds]));

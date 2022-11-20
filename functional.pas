@@ -3,10 +3,16 @@ unit functional;
 interface
 
 function WriteOneHundredThousandRandomBytesIncrementingCounter(ACounter: Integer): integer;
+procedure OutputCompletedResult(ACounter: integer);
 
 implementation
 
-uses System.IOUtils;
+uses System.SysUtils, System.IOUtils;
+
+procedure OutputCompletedResult(ACounter: integer);
+begin
+ Writeln(Format('Call %d complete.', [ACounter]));
+end;
 
 function WriteOneHundredThousandRandomBytesIncrementingCounter(ACounter: Integer): integer;
 begin

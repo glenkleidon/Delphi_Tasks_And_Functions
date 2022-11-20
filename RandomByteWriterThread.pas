@@ -6,13 +6,14 @@ uses
   System.Classes;
 
 type
-  RandomByteWriter = class(TThread)
+  TRandomByteWriter = class(TThread)
   private
     FCounter: Integer;
   protected
-    constructor Create(ACounter: integer);
     procedure Execute; override;
     property Counter : integer read FCounter;
+  public
+    constructor Create(ACounter: integer); overload;
   end;
 
 implementation
@@ -53,16 +54,18 @@ uses functional;
 
 { RandomByteWriter }
 
-constructor RandomByteWriter.Create(ACounter: integer);
+constructor TRandomByteWriter.Create(ACounter: integer);
 begin
   FCounter:=ACounter;
+  inherited Create(false);
 end;
 
-procedure RandomByteWriter.Execute;
+procedure TRandomByteWriter.Execute;
 begin
   FreeOnTerminate := False;
   WriteOneHundredThousandRandomBytesIncrementingCounter(FCounter);
   inc(FCounter);
+  OutputCompletedResult(FCounter);
 end;
 
 end.
